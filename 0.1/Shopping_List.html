@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+    <!------------JQuery_Setup------------>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+        <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <!------------JQuery_Setup------------>
+	</head>
+	<body>
+    
+    <!------------Main_Page------------>
+    <div data-role="page" id="pageone">
+        <div data-role="header">
+            <h1>Shopping List</h1>
+        </div>
+        <div data-role="main" align="center">
+            <p>Welcome to your <b>Personal Shopping List</b></p>
+            <a href="" class="ui-btn ui-icon-arrow-r ui-btn-icon-right ui-alt-icon ui-btn-inline">Create Your List</a> 
+            <br>
+            <a href="" class="ui-btn ui-icon-search ui-btn-icon-right ui-btn-inline">Load List</a>
+            <br>
+            <a href="" class="ui-btn ui-icon-grid ui-btn-icon-right ui-btn-inline">Add Items</a>
+            <br>
+            <a href="" class="ui-btn ui-icon-info ui-btn-icon-right ui-btn-inline">Weekly Summary</a>
+            <br>
+            <a href="#guide" class="ui-btn ui-icon-info ui-btn-icon-right ui-btn-inline">Help</a>
+        </div>
+        <div data-role="footer">
+    	   	<h1>Enjoy!</h1>
+        </div>
+    </div> 
+    <!------------Main_Page------------>
+    
+    
+    
+    <!------------Help_Page------------>  
+    <div data-role="page" data-dialog="true" id="guide">
+  		<div data-role="header">
+    		<h1>Guide</h1>
+  		</div>
+  		<div data-role="main" class="ui-content">
+    		<p>Click "Create Your List" to begin making your new list. Click "Load List" to load a previously made list. Click "Add Items" to add new items that you can add to your list. Click "Weekly Summary" to check your weekly report on what you've bought.</p>
+    		<div align="center">
+    			<a href="#pageone" class="ui-btn ui-icon-home ui-btn-icon-left ui-btn-inline" >Return to Main</a>
+    		</div>
+        </div>
+        <div data-role="footer">
+            <h1>Guide</h1>
+        </div>
+    </div>
+    <!------------Help_Page------------>  
+	</body>
+</html>
