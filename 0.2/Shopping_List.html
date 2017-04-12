@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+	<head>
+    <!------------JQuery_Setup------------>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+        <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <!------------JQuery_Setup------------>
+	</head>
+	<body>
+    
+    
+    <!------------Main_Page------------>
+    <div data-role="page" id="pageone">
+		
+        <div data-role="header">
+            <h1>Shopping List</h1>
+        </div>
+        <div data-role="main" align="center">
+            <p>Welcome to your <b>Personal Shopping List</b></p>
+            <a href="#items"  data-transition="pop" class="ui-btn ui-icon-arrow-r ui-btn-icon-right ui-alt-icon ui-btn-inline ui-corner-all">Create Your List</a> 
+            <br>
+            <a href="" class="ui-btn ui-icon-search ui-btn-icon-right ui-btn-inline ui-corner-all">Load List</a>
+            <br>
+            <a href="" class="ui-btn ui-icon-grid ui-btn-icon-right ui-btn-inline ui-corner-all ">Add Items</a>
+            <br>
+            <a href="" class="ui-btn ui-icon-info ui-btn-icon-right ui-btn-inline ui-corner-all">Weekly Summary</a>
+            <br>
+            <a href="#guide" data-transition="flip" class="ui-btn ui-icon-info ui-btn-icon-right ui-btn-inline ui-corner-all">Help</a>
+        </div>
+        <div data-role="footer">
+    	   	<h1>Enjoy!</h1>
+        </div>
+    </div> 
+    <!------------Main_Page------------>
+    
+    
+    <!------------Item_Page------------>
+    <div data-role="page" id="items">
+    	<div data-role="header">
+        	<a href="#pageone" data-transition="pop" data-direction="reverse" class="ui-btn ui-icon-home ui-btn-icon-left ui-btn-inline ui-corner-all">Home</a>
+        	<h1>Items</h1>
+        </div>
+    	<div data-role="main" class="ui-content">
+            <form class="ui-filterable">
+            	<input id="myFilter" data-type="search">
+            </form>
+            <ul data-role="listview" data-filter="true" data-input="#myFilter" data-autodividers="true" data-inset="true">
+            	<li><a onclick="gotoQuantity(this)">Apples</a></li>
+                <li><a href="">Apricot</a></li>
+                <li><a href="">Bananas</a></li>
+                <li><a href="">Beetroot</a></li>
+                <li><a href="">Carrot</a></li>
+                <li><a href="">Chives</a></li>
+                <li><a href="">Potatoes</a></li>
+                <li><a href="">Raspberries</a></li>
+                <li><a href="">Strawberries</a></li>
+            </ul>
+        </div>
+    </div>
+    <!------------Item_Page------------>
+    
+
+    <!------------Quantity_Page------------>
+<div data-role="page" id="quantity" data-url="quantity">
+	<div data-role="main" class="ui-content">
+  		<div id="vegname"></div>
+   		<div class="ui-field-contain">
+        	<label for="spin">Input spinner</label>
+        	<input type="text" data-role="spinbox" name="spin" id="spin" value="0" min="0" max="10">
+        </div>
+        <button onclick="backToList()">Choose Again</button>
+        <button onclick="showChosenItems()">Show Chosen Items</button>
+ </div>
+ </div>
+    <!------------Quantity_Page------------>
+
+
+
+
+
+    
+    <!------------Help_Page------------>  
+    <div data-role="page" data-dialog="true" id="guide">
+  		<div data-role="header">
+    		<h1>Guide</h1>
+  		</div>
+  		<div data-role="main" class="ui-content">
+    		<p>
+            	Click "Create Your List" to begin making your new list. 
+                <br><br>
+                Click "Load List" to load a previously made list. 
+                <br><br>
+                Click "Add Items" to add new items that you can add to your list. 
+                <br><br>
+                Click "Weekly Summary" to check your weekly report on what you've bought.
+            </p>
+    		<div align="center">
+    			<a href="#pageone" data-transition="flip" data-direction="reverse" class="ui-btn ui-icon-home ui-btn-icon-left ui-btn-inline" >Return to Main</a>
+    		</div>
+        </div>
+        <div data-role="footer">
+            <h1>Guide</h1>
+        </div>
+    </div>
+    <!------------Help_Page------------>  
+
+
+
+
+
+    <!------------Scripts------------>  
+<script>
+	var chosenItems = {};
+	
+	$( document ).ready(function() {
+		// you can only save strings to local storage
+		// so all js objects have to be saved in the form JSON.stringify()
+		// and retrieved in the format JSON.parse(obj)
+		var q = localStorage.getItem("previousList");
+		if (q!=null) chosenItems = JSON.parse(q);
+	});
+	
+	
+	
+	function gotoQuantity(obj)
+	{
+		$.mobile.changePage("#quantity");
+		vegetablesChosen = $(obj).text();
+		$("#vegname").text(vegetablesChosen);
+		
+		
+	}
+	
+	function showChosenItems()
+	{
+		if ($("#spin").val()!="0")    saveChoice();
+		
+		//remove existing items from shopping list
+		 $("#shoppingList").empty();
+		 
+		 //iterate through the dictionary chosenItems
+		 for (var key in chosenItems) {
+		 
+		  vegData = key + ":" +  chosenItems[key];
+		  $('<li>').append('<a href="#">' + vegData + '</a>').appendTo('#shoppingList');
+		  
+		  
+		 }
+		//you have to navigate to the page after you have populated
+		$.mobile.changePage("#finalShoppingList");
+		 $("#shoppingList").listview('refresh');
+		
+		
+	}
+	
+	function backToList()
+	{
+		saveChoice();
+		$.mobile.changePage("#items");
+		$("#spin").val(0);
+	}
+	
+	function saveChoice()
+	{
+		vegetableChosen = $("#vegname").text();
+		quantityChosen = $("#spin").val();
+		chosenItems[vegetableChosen] = quantityChosen;
+		localStorage.setItem("previousList",JSON.stringify(chosenItems));
+	}
+
+</script>
+    
+    <!------------Scripts------------>  
+
+    
+</body>
+</html>
