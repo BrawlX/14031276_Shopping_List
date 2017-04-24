@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<!---Notes:
+	<p>,<div>,<ul>.etc. - elements
+	#pageone - Look for ID with the name pageone (the # is used to state that pageone is an ID name)
+	.pageone - Look for class names with the name pageone (. is used to state pageone is a class name)
+	When making elements the first element is tagged 0. Later elements are +1
+	Style:
+		Usually written inside an element
+		px - pixels/size of position (You know those 1920 by 1080 screens? Thats measured in pixels)
+		#name - what ID thats used to call this style. Can have more than one ID
+		Styles:
+			width
+			height
+			display
+			background-color
+			border
+			text-align
+			padding
+
+	Scripts (Some details are already in jquery mobile coding so not all commands are needed):
+			$(document).ready(function(){ - Prevents jquery code from running until the document is finished loading
+			Basic syntax = $(selector).action(function(){What to do;});
+				$ - Define/access query
+				selector - what is it looking for?
+				action - what action should it take/find?
+			alert() - Popup appears with text
+			$(this) - Select current HTML element
+			function() - If statement? Usually written at the end of the statement
+			.click() - Checks if selector was clicked on
+			.dbclick() - Checks if selector was double-clicked
+			.hide() - Hides selector (Used after the check - see Basic Syntax)
+				.hide(speed,callback) - Speed represents how long it takes for the selector to disappear
+			.show() - Un-hides selector
+			.toggle() - Merges hide and show (press once to hide, press again to show)
+			.mouseenter() - Checks if mouse is in selector
+			.mouseleave() - Checks if mouse left selector
+			.mousedown() - Checks if any buttons on the mouse is pressed while on top of the selector
+			.mouseup() - Checks if any buttons on the mouse is released while on top of the selector
+			.hover() - Mix of mousedown and mouseup. It's like a if and else statement: if being if mouse is in it and else being if its left it
+				$("#p1").hover(function(){
+					alert("You entered p1!");
+				},
+				function(){
+					alert("Bye! you now leave p1!");
+				});
+			.focus - Checks if input is selected. Mostly used for text inputs
+				$("input").focus(function(){
+					$(this).css("background-color","#cccccc");
+				});
+			.blur - Check if input is not selected. Mostly used for text inputs
+				$("input").blur(function(){
+					$(this).css("background-color","#ffffff");
+				});
+			.css() - Add traits to a selector that a css file would have
+				"background-color", "color-code/color-name") - Add coloured bacground elements
+			.on(action/s) - Allows for multiple checks to be put on one selector. Similar to if/else if
+				$("p").on({
+					mouseenter: function(){
+						$this().css("background-color","lightgrey");
+					},
+					mouseleave: function(){
+						$(this).css("background-color","yellow");
+					}
+				});
+			.fadeIn() - Fades in stuff. Put in the brackets how fast you want it if you like(type slow or a number - the bigger the number the longer it takes (1000 = 1 second))
+			.fadeOut() - Fades out stuff. Put in the brackets how fast you want it if you like (type slow or a number - the bigger the number the longer it takes (1000 = 1 second))
+			.fadeToggle() - Mixes fadeIn and fadeOut (type how long you'd like it to last. Both fafe ins and outs use the same details)
+			.fadeTo() - Fade to set opacity (state how long and how alpha it is (1 = no alpha, 0 = invisible))
+			.slideDown/Up() - Slides a panel down/up to be viewable (Can set speed)
+			.slideToggle() - slideDown/Up on the same command (Can set speed, both use same setup)
+			$("button").click(function(){ - If buttons clicked do this
+			$("p").click(function(){ - If a p element is clicked do this
+			$("this").hide(); - Hides selected item
+			$("p").hide(); - Hides elements that use the p element
+			$("#p").hide(); - Hides elements with the ID p
+			$(".p").hide(); - Hides elements with the class name p
+			$(function(){ - Shorter version of $(document).ready(function(){. Either works but the first one is easier to understand when reading code
+			$(*) - Select everything
+			$("p.intro") - Selects p elements with the class name intro
+			$("p:first") - Select first p element
+			$("ul li:first") - Select first li element of first ul element
+			$("ul li:first-child") - Select first li element of every ul element
+			$("[href]") - Select all elements with a href attribute
+			$(":button") Select all button and input elements of type button
+			$("tr:even") - Select all even tagged tr elements
+			$("tr:odd") - Select all odd tagged tr elements
+			$(this).css() - Write to selector a CSS format
+--->
+<html>
+	<head>
+    <!------------JQuery_Setup------------>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+        <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+        <script type="text/javascript" src="http://dev.jtsage.com/cdn/spinbox/latest/jqm-spinbox.min.js"></script>
+    <!------------JQuery_Setup------------>
+	</head>
+	<body>
+    <!------------Main_Page------------>
+    <div data-role="page" id="pageone">
+
+        <div data-role="header">
+            <h1>Shopping List</h1>
+        </div>
+        <div data-role="main" align="center">
+            <p>Welcome to your <b>Personal Shopping List</b></p>
+            <a onclick="gotoItems()" data-transition="pop" class="ui-btn ui-icon-arrow-r ui-btn-icon-right ui-alt-icon ui-btn-inline ui-corner-all">Create Your List</a>
+            <br>
+            <a onclick="showChosenItems(0)" class="ui-btn ui-icon-search ui-btn-icon-right ui-btn-inline ui-corner-all">Chosen Items</a>
+            <br>
+            <a href="#add" class="ui-btn ui-icon-grid ui-btn-icon-right ui-btn-inline ui-corner-all ">Add Items</a>
+            <br>
+            <a href="" class="ui-btn ui-icon-info ui-btn-icon-right ui-btn-inline ui-corner-all">Weekly Summary</a>
+            <br>
+            <a onclick="clearLists()" class="ui-btn ui-icon-grid ui-btn-icon-right ui-btn-inline ui-corner-all ">Clear Lists</a>
+            <br>
+            <a href="#guide" data-transition="flip" class="ui-btn ui-icon-info ui-btn-icon-right ui-btn-inline ui-corner-all">Help</a>
+        </div>
+        <div data-role="footer">
+    	   	<h1>Enjoy!</h1>
+        </div>
+    </div>
+    <!------------Main_Page------------>
+
+    <!------------Item_Page------------>
+    <div data-role="page" id="items" data-url="items">
+    	<div data-role="header">
+        	<a href="#pageone" data-transition="pop" data-direction="reverse" class="ui-btn ui-icon-home ui-btn-icon-left ui-btn-inline ui-corner-all">Home</a>
+            <a onClick="defaultList()" class="ui-btn ui-icon-home ui-btn-icon-right ui-btn-inline ui-corner-all">Default Items</a>
+        	<h1>Items</h1>
+        </div>
+    	<div data-role="main" class="ui-content">
+            <form class="ui-filterable">
+            	<input id="myFilter" data-type="search">
+            </form>
+            <ul data-role="listview" data-filter="true" data-input="#myFilter" data-autodividers="true" data-inset="true" id="all">
+            </ul>
+        </div>
+    </div>
+    <!------------Item_Page------------>
+
+    <!------------Quantity_Page------------>
+    <div data-role="page" id="quantity" data-url="quantity">
+	<div data-role="header" align="center" class="ui-content">
+		<a href="#pageone" data-transition="pop" data-direction="reverse" class="ui-btn ui-icon-home ui-btn-icon-left ui-corner-all">Home</a>
+		<h1 id="vegname"></h1></div>
+	   <div data-role="main" class="ui-content">
+            <div class="ui-field-contain">
+        	   <label for="spin">How Many?</label>
+        	   <input type="text" data-role="spinbox" name="spin" id="spin" value="0" min="0" max="10">
+            </div>
+			<div align="center">
+				<a onclick="showChosenItems(1)" class="ui-btn ui-btn-inline ui-corner-all">Add to List</a>
+				<a onclick="backToList()" class="ui-btn ui-btn-inline ui-corner-all" >Cancel</a>
+			<div id ="delete"></div>
+			</div>
+        </div>
+    </div>
+    <!------------Quantity_Page------------>
+    
+	<!----------Current_List_Page---------->
+	<div data-role="page" id="finalShoppingList">
+        <div data-role="header">
+            <a href="#pageone" data-transition="pop" data-direction="reverse" class="ui-btn ui-icon-home ui-btn-icon-left ui-btn-inline ui-corner-all">Home</a>
+            <h1>Current List's Items</h1>
+        </div>
+    	<div data-role="main" class="ui-content">
+    		<div id="allVegetablesChosen">
+    			<ul data-role="listview" data-filter="true" data-input="#myFilter" data-autodividers="true" data-inset="true" id="shoppingList"></ul>
+  			   <button onclick="gotoItems()">Choose Again</button>
+  		    </div>
+        </div>
+    </div>
+	<!----------Current_List_Page---------->
+        
+    <!----------Add_Items_Page------------->
+    <div data-role="page" id="add">
+        <div data-role="header">
+            <a href="#pageone" data-transition="pop" data-direction="reverse" class="ui-btn ui-icon-home ui-btn-icon-left ui-btn-inline ui-corner-all">Home</a>
+            <h1>Add Items</h1>
+        </div>
+        <div data-role="main" class="ui-content" align="center">
+            <p>Enter your new item below. First letter entered will become uppercase.</p>
+            <input type="text" id="new_item" placeholder="Name here">
+            <a onclick="addToList()" class="ui-btn ui-icon-plus ui-btn-icon-left ui-btn-inline">Add</a>
+        </div>
+        <div data-role="footer" class="ui-content">
+            <h1>Add Items</h1>
+        </div>
+    </div>
+    <!----------Add_Items_Page------------->
+        
+
+    <!------------Help_Page------------>
+    <div data-role="page" data-dialog="true" id="guide">
+  		<div data-role="header">
+    		<h1>Guide</h1>
+  		</div>
+  		<div data-role="main" class="ui-content">
+    		<p>
+            	Click "Create Your List" to begin making your new list. Select your item and how many you would like.
+                <br><br>
+                Click "Load List" to load a previously made list.
+                <br><br>
+                Click "Add Items" to add new items that you can add to your list. Simply type in the item you want to add and it will appear in the item list. If it already exists it will let you know and you can enter something else then.
+                <br><br>
+                Click "Weekly Summary" to check your weekly report on what you've bought.
+            </p>
+    		<div align="center">
+    			<a href="#pageone" data-transition="flip" data-direction="reverse" class="ui-btn ui-icon-home ui-btn-icon-left ui-btn-inline" >Return to Main</a>
+    		</div>
+        </div>
+        <div data-role="footer">
+            <h1>Guide</h1>
+        </div>
+    </div>
+    <!------------Help_Page------------>
+
+    
+    <!------------Scripts------------>
+    <script>
+    var chosenItems = {};
+    var all_items = [];
+    var hold;
+	var save = 0;
+	var on_load = 0;
+
+
+    $( document ).ready(function() {
+        // you can only save strings to local storage
+        // so all js objects have to be saved in the form JSON.stringify()
+        // and retrieved in the format JSON.parse(obj)
+        var q = localStorage.getItem("previousList");
+        if (q!=null) chosenItems = JSON.parse(q);
+		var l = localStorage.getItem("items");
+		if (l!=null) all_items = JSON.parse(l);
+		gotoItems();
+		showChosenItems(1);
+		on_load = 1;
+    });
+        
+    function gotoItems()
+    {
+        all_items.sort();
+        $("#all").empty();
+        for (var x in all_items)
+        {
+            vegData =  all_items[x];
+            $('<li>').append('<a onclick="gotoQuantity(this,1)">' + vegData + '</a>').appendTo('#all');
+        };
+		if (on_load > 0)
+		{
+			$.mobile.changePage("#items");
+			$("#all").listview('refresh');
+		}
+		
+    }
+
+    function gotoQuantity(obj,del)
+    {
+        $.mobile.changePage("#quantity");
+		$("#spin").val(0);
+        vegetablesChosen = $(obj).text();
+		$('#vegname').empty();
+		$('#delete').empty();
+        $('#vegname').append(vegetablesChosen);
+		if (del == 1)
+		{
+			$('#delete').append('<a onclick="deleteAll()" class="ui-btn ui-btn-inline ui-corner-all">Remove</a>');
+		}
+		if (del == 2)
+		{
+			$('#delete').append('<a onclick="deleteOne(0)" class="ui-btn ui-btn-inline ui-corner-all">Delete from List</a>');
+		}
+    }
+
+    function addToList()
+    {
+        hold = $("#new_item").val();
+		hold = hold.charAt(0).toUpperCase() + hold.slice(1);
+        if (all_items.indexOf(hold) == -1) 
+        {
+            all_items[all_items.length] = hold;
+            alert("Now in list");
+			save = 1;
+			saveChoice();
+        }
+        else 
+        {
+            alert($("#new_item").val() +  " is already in our list. Add a different item.");
+        }
+        all_items.sort();
+		
+		
+    }
+        
+    function showChosenItems(x)
+    {
+        if ($("#spin").val() > 0)
+		{
+
+			save = 0;
+			saveChoice();
+		}
+		else
+		{
+			if (on_load > 0 && x == 1) alert("No value given, showing current chosen items");
+		}
+
+        //remove existing items from shopping list
+         $("#shoppingList").empty();
+
+         //iterate through the dictionary chosenItems
+         for (var key in chosenItems) {
+
+          vegData = key + ":" +  chosenItems[key];
+            $('<li>').append('<a onclick="gotoQuantity(this,2)">' + vegData + '</a>').appendTo('#shoppingList');
+
+
+         }
+        //you have to navigate to the page after you have populated
+		if (on_load > 0)
+		{
+			$.mobile.changePage("#finalShoppingList");
+			$("#shoppingList").listview('refresh');
+		}
+    }
+
+    function backToList()
+    {
+		save = 0;
+        saveChoice();
+        $.mobile.changePage("#items");
+    }
+
+    function saveChoice()
+    {
+		if (save == 0)
+		{
+			vegetableChosen = $("#vegname").text();
+			quantityChosen = $("#spin").val();
+			if (vegetableChosen.indexOf(':') > -1)
+			{
+				vegetableChosen = vegetableChosen.slice(0,vegetableChosen.indexOf(':'));
+			}
+			if (vegetableChosen in chosenItems)
+			{
+				alert("Item already exists in your list. Any adjusted values will be added to item.");
+			}
+			chosenItems[vegetableChosen] = quantityChosen;
+			localStorage.setItem("previousList",JSON.stringify(chosenItems));
+		}
+		if (save == 1)
+		{
+			localStorage.setItem("items",JSON.stringify(all_items));
+		}
+		else
+		{
+			localStorage.setItem("previousList",JSON.stringify(chosenItems));
+		}
+    }
+	function clearLists()
+	{
+		all_items = [];
+		chosenItems = {};
+		localStorage.clear();
+	}
+	function defaultList()
+	{
+		all_items = ["Apples", "Avacardo", "Apricots", "Aubergines", "Bananas","Beetroot","Broccolli","Caluiflower","Carrots","Courgettes","Chives","Cucumber","Green Beans","Fennel","Grapes","Leek","Lettuce","Onion","Potatoes","Strawberries","Sweet Corn","Tomatoes"];
+		save = 1;
+		saveChoice();
+		gotoItems();
+	}
+	
+	function deleteAll()
+	{
+		deleteOne(1);
+		vegetableChosen = $("#vegname").text();
+		vegetableChosen = all_items.indexOf(vegetableChosen);
+		all_items.splice(vegetableChosen, 1);
+		save = 1;
+		saveChoice();
+		gotoItems();
+	}
+	
+	function deleteOne(x)
+	{
+		vegetableChosen = $("#vegname").text();
+		vegetableChosen = vegetableChosen.slice(0,vegetableChosen.indexOf(':'));
+		delete chosenItems[vegetableChosen];
+		alert("Done");
+		save = 2;
+		saveChoice();
+		if (x == 0) showChosenItems();
+	}
+    </script>
+    <!------------Scripts------------>
+
+
+</body>
+</html>
