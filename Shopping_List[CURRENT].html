@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+	<head>
+    <!------------JQuery_Setup------------>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+        <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+        <script type="text/javascript" src="http://dev.jtsage.com/cdn/spinbox/latest/jqm-spinbox.min.js"></script>
+    <!------------JQuery_Setup------------>
+	</head>
+	<body>
+    <!------------Main_Page------------>
+    <div data-role="page" id="pageone">
+
+        <div data-role="header">
+            <h1>Shopping List</h1>
+        </div>
+        <div data-role="main" align="center">
+            <p>Welcome to your <b>Personal Shopping List</b></p>
+            <a onclick="gotoItems()" data-transition="pop" class="ui-btn ui-icon-arrow-r ui-btn-icon-right ui-alt-icon ui-btn-inline ui-corner-all">Create Your List</a>
+            <br>
+            <a onclick="showChosenItems(0)" class="ui-btn ui-icon-search ui-btn-icon-right ui-btn-inline ui-corner-all">Chosen Items</a>
+            <br>
+            <a href="#add" class="ui-btn ui-icon-grid ui-btn-icon-right ui-btn-inline ui-corner-all ">Add Items</a>
+            <br>
+            <a onclick="weeklySummary()" class="ui-btn ui-icon-info ui-btn-icon-right ui-btn-inline ui-corner-all">List Summary</a>
+            <br>
+            <a onclick="clearLists()" class="ui-btn ui-icon-grid ui-btn-icon-right ui-btn-inline ui-corner-all ">Reset Lists</a>
+            <br>
+            <a href="#guide" data-transition="flip" class="ui-btn ui-icon-info ui-btn-icon-right ui-btn-inline ui-corner-all">Help</a>
+        </div>
+        <div data-role="footer">
+    	   	<h1>Enjoy!</h1>
+        </div>
+    </div>
+    <!------------Main_Page------------>
+
+    <!------------Item_Page------------>
+    <div data-role="page" id="items" data-url="items">
+    	<div data-role="header">
+        	<a href="#pageone" data-transition="pop" data-direction="reverse" class="ui-btn ui-icon-home ui-btn-icon-left ui-btn-inline ui-corner-all">Home</a>
+            <a onClick="defaultList()" class="ui-btn ui-icon-plus ui-btn-icon-right ui-btn-inline ui-corner-all">Default Items</a>
+        	<h1>Items</h1>
+        </div>
+    	<div data-role="main" class="ui-content">
+            <form class="ui-filterable">
+            	<input id="myFilter" data-type="search">
+            </form>
+            <ul data-role="listview" data-filter="true" data-input="#myFilter" data-autodividers="true" data-inset="true" id="all">
+            </ul>
+        </div>
+    </div>
+    <!------------Item_Page------------>
+
+    <!------------Quantity_Page------------>
+    <div data-role="page" id="quantity" data-url="quantity">
+	<div data-role="header" align="center" class="ui-content">
+		<a href="#pageone" data-transition="pop" data-direction="reverse" class="ui-btn ui-icon-home ui-btn-icon-left ui-corner-all">Home</a>
+		<h1 id="vegname"></h1></div>
+	   <div data-role="main" class="ui-content">
+            <div class="ui-field-contain">
+        	   <label for="spin">How Many?</label>
+        	   <input type="text" data-role="spinbox" name="spin" id="spin" value="0" min="0" max="10">
+            </div>
+			<div align="center">
+				<a onclick="showChosenItems(1)" class="ui-btn ui-btn-inline ui-corner-all">Add to List</a>
+				<a onclick="backToList()" class="ui-btn ui-btn-inline ui-corner-all" >Cancel</a>
+			<div id ="delete"></div>
+			</div>
+        </div>
+    </div>
+    <!------------Quantity_Page------------>
+    
+	<!----------Current_List_Page---------->
+	<div data-role="page" id="finalShoppingList">
+        <div data-role="header">
+            <a href="#pageone" data-transition="pop" data-direction="reverse" class="ui-btn ui-icon-home ui-btn-icon-left ui-btn-inline ui-corner-all">Home</a>
+			<a onclick="weeklySummary()" class="ui-btn ui-icon-info ui-btn-icon-left ui-btn-inline ui-corner-all">List Summary</a>
+            <h1>Current List's Items</h1>
+        </div>
+    	<div data-role="main" class="ui-content">
+    		<div id="allVegetablesChosen">
+    			<ul data-role="listview" data-filter="true" data-input="#myFilter" data-autodividers="true" data-inset="true" id="shoppingList"></ul>
+  			   <button onclick="gotoItems()">Choose Again</button>
+  		    </div>
+        </div>
+    </div>
+	<!----------Current_List_Page---------->
+        
+    <!----------Add_Items_Page------------->
+    <div data-role="page" id="add">
+        <div data-role="header">
+            <a href="#pageone" data-transition="pop" data-direction="reverse" class="ui-btn ui-icon-home ui-btn-icon-left ui-btn-inline ui-corner-all">Home</a>
+            <h1>Add Items</h1>
+        </div>
+        <div data-role="main" class="ui-content" align="center">
+            <p>Enter your new item below. First letter entered will become uppercase.</p>
+            <input type="text" id="new_item" placeholder="Name here">
+            <a onclick="addToList()" class="ui-btn ui-icon-plus ui-btn-icon-left ui-btn-inline">Add</a>
+        </div>
+        <div data-role="footer" class="ui-content">
+            <h1>Add Items</h1>
+        </div>
+    </div>
+    <!----------Add_Items_Page------------->
+        
+		
+		
+    <!------------Weekly_Summary_Page------------>
+    <div data-role="page" data-dialog="true" id="weeklySummary">
+  		<div data-role="header">
+    		<h1>List Summary</h1>
+  		</div>
+  		<div data-role="main" class="ui-content">
+			<div class="summary"></div>
+			<div align="center">
+				<a href="#pageone" data-transition="flip" data-direction="reverse" class="ui-btn ui-icon-home ui-btn-icon-left ui-btn-inline" >Return to Main Menu</a>
+				<br>
+				<a onclick="showChosenItems(0)" class="ui-btn ui-icon-search ui-btn-icon-left ui-btn-inline">Chosen Items</a>
+			</div>
+		</div>
+        <div data-role="footer">
+            <h1>List Summary</h1>
+        </div>
+    </div>
+    <!------------Weekly_Summary_Page------------>
+
+    <!------------Help_Page------------>
+    <div data-role="page" data-dialog="true" id="guide">
+  		<div data-role="header">
+    		<h1>Guide</h1>
+  		</div>
+  		<div data-role="main" class="ui-content" id="tutorial">
+    		<p>
+            	Click "Create Your List" to begin making your new list. Select your item and how many you would like. You can press the "Default Items" button to generate a pre-made list of items.
+                <br><br>
+                Click "Chosen Items" to your list of items.
+                <br><br>
+                Click "Add Items" to add new items that you can add to your list. Simply type in the item you want to add and it will appear in the item list. If it already exists it will let you know and you can enter something else then.
+                <br><br>
+                Click "List Summary" to check the report on what you've listed. This displays the item names, the total number of items listed, the combined total, total completed and not completed items.
+            </p>
+    		<div align="center">
+    			<a href="#pageone" data-transition="flip" data-direction="reverse" class="ui-btn ui-icon-home ui-btn-icon-left ui-btn-inline" >Return to Main Menu</a>
+    		</div>
+        </div>
+        <div data-role="footer">
+            <h1>Guide</h1>
+        </div>
+    </div>
+    <!------------Help_Page------------>
+
+    
+    <!------------Scripts------------>
+    <script>
+		var chosenItems = {};
+		var all_items = [];
+		var completed_items = [];
+		var hold;
+		var on_load = 0;
+		var total = 0;
+		var count = 0;
+		var count2 = 0;
+		var count3 = 0;
+
+
+		$( document ).ready(function() {
+			// you can only save strings to local storage
+			// so all js objects have to be saved in the form JSON.stringify()
+			// and retrieved in the format JSON.parse(obj)
+			var q = localStorage.getItem("previousList");
+			if (q!=null) chosenItems = JSON.parse(q);
+			var l = localStorage.getItem("items");
+			if (l!=null) all_items = JSON.parse(l);
+			var t = localStorage.getItem("completedItems");
+			if (t!=null) completed_items = JSON.parse(t);
+			gotoItems();
+			showChosenItems(1);
+			on_load = 1;
+		});
+			
+		function gotoItems()
+		{
+			all_items.sort();
+			$("#all").empty();
+			for (var x in all_items)
+			{
+				vegData =  all_items[x];
+				$('<li>').append('<a onclick="gotoQuantity(this,1)">' + vegData + '</a>').appendTo('#all');
+			};
+			if (on_load > 0)
+			{
+				$.mobile.changePage("#items");
+				$("#all").listview('refresh');
+			}
+			
+		}
+
+		function gotoQuantity(obj,del)
+		{
+			$.mobile.changePage("#quantity");
+			$("#spin").val(0);
+			vegetablesChosen = $(obj).text();
+			$('#vegname').empty();
+			$('#delete').empty();
+			$('#vegname').append(vegetablesChosen);
+			if (del == 1) $('#delete').append('<a onclick="deleteIf(1)" class="ui-btn ui-btn-inline ui-corner-all">Remove From Everything</a>');
+			if (del == 2)
+			{
+				$('#delete').append('<a onclick="completed()" class="ui-btn ui-btn-inline ui-corner-all">Mark as Completed</a>');
+				$('#delete').append('<a onclick="incomplete()" class="ui-btn ui-btn-inline ui-corner-all">Mark as Incomplete</a>');
+				$('#delete').append('<a onclick="deleteIf(0)" class="ui-btn ui-btn-inline ui-corner-all">Remove from List</a>');
+			}
+		}
+
+		function addToList()
+		{
+			hold = $("#new_item").val();
+			if (hold.length > 0)
+			{
+				hold = hold.charAt(0).toUpperCase() + hold.slice(1);
+				if (all_items.indexOf(hold) == -1) 
+				{
+					all_items[all_items.length] = hold;
+					alert("Now in list");
+					saveChoice(1);
+				}
+				else alert($("#new_item").val() +  " is already in our list. Add a different item.");
+				all_items.sort();
+			}
+			else alert("This is empty. Please type something into it.");
+			
+			
+		}
+		function incomplete()
+		{
+			hold = $("#vegname").text();
+			hold = hold.slice(0,hold.indexOf(':'));
+			alert(hold);
+			if (completed_items.indexOf(hold) >= 0 ) completed_items.splice(hold, 1);
+			saveChoice(3);
+			showChosenItems();
+		}
+		function completed()
+		{
+			hold = $("#vegname").text();
+			hold = hold.slice(0,hold.indexOf(':'));
+			if (completed_items.indexOf(hold) == -1) completed_items[completed_items.length] = hold;
+			else alert("This item is already marked as completed");
+			saveChoice(3);
+			showChosenItems(2);
+		}
+		function showChosenItems(x)
+		{
+			if ($("#spin").val() > 0) {saveChoice(0); $("#spin").val(0);}
+			else if (on_load > 0 && x == 1) alert("No value given, showing current chosen items");
+
+			//remove existing items from shopping list
+			$("#shoppingList").empty();
+
+			 //iterate through the dictionary chosenItems
+			for (var key in chosenItems) 
+			{
+				vegData = key + ":" +  chosenItems[key];
+				check = 0;
+				for (var c in completed_items)
+				{
+					if(completed_items[c] == key)
+					{
+						$('<li>').append('<a onclick="gotoQuantity(this,2)" style="background:DarkSeaGreen ; text-shadow:0 0 0; color: black; font-weight:normal;">' + vegData + ' (Done)</a>').appendTo('#shoppingList');
+						check = 1;
+						break;
+					}
+				}
+				if (check == 0) $('<li>').append('<a onclick="gotoQuantity(this,2)">' + vegData + '</a>').appendTo('#shoppingList');
+			}
+			//you have to navigate to the page after you have populated
+			if (on_load > 0)
+			{
+				$.mobile.changePage("#finalShoppingList");
+				$("#shoppingList").listview('refresh');
+			}
+		}
+		
+		function weeklySummary()
+		{
+			total = 0;
+			count = 0;
+			count2 = 0;
+			count3 = 0;
+			for (var v in chosenItems) count ++;
+			$('.summary').empty();
+			$('<p>').append('Total Number of Items: ' + count).appendTo('.summary');
+			for (var c in chosenItems)
+			{
+				if (completed_items.indexOf(c) == -1) {vegData = c + " - " + chosenItems[c]; check = 0; count2 ++;}
+				else {vegData = c + " - " + chosenItems[c] + " (Completed)"; check = 1; count3 ++;}
+				total += parseInt(chosenItems[c]);
+				$('<p>').append(vegData + '<br>').appendTo('.summary');
+			}
+			$('<p>').append('Combined Total: ' + total).appendTo('.summary');
+			$('<p>').append('Completed: ' + count2).appendTo('.summary');
+			$('<p>').append('Not Complete: ' + count3).appendTo('.summary');
+			$.mobile.changePage('#weeklySummary');
+		}
+		
+		function backToList()
+		{
+			saveChoice(0);
+			$.mobile.changePage("#items");
+		}
+
+		function saveChoice(save)
+		{
+			if (save == 0)
+			{
+				vegetableChosen = $("#vegname").text();
+				quantityChosen = $("#spin").val();
+				if (vegetableChosen.indexOf(':') > -1) vegetableChosen = vegetableChosen.slice(0,vegetableChosen.indexOf(':'));
+				if (vegetableChosen in chosenItems) alert("Item already exists in your list. Any adjusted values will be added to item.");
+				completed_items.splice(completed_items.indexOf(vegetableChosen),1);
+				chosenItems[vegetableChosen] = quantityChosen;
+				localStorage.setItem("previousList",JSON.stringify(chosenItems));
+				localStorage.setItem("completedItems",JSON.stringify(completed_items));
+			}
+			if (save == 1) localStorage.setItem("items",JSON.stringify(all_items));
+			if (save == 2) localStorage.setItem("previousList",JSON.stringify(chosenItems));
+			if (save == 3) localStorage.setItem("completedItems",JSON.stringify(completed_items));
+		}
+		function clearLists()
+		{
+			all_items = [];
+			chosenItems = {};
+			completed_items = [];
+			localStorage.clear();
+			week = {};
+		}
+		function defaultList()
+		{
+			all_items = ["Apples", "Avacardo", "Apricots", "Aubergines", "Bananas","Beetroot","Broccolli","Caluiflower","Carrots","Courgettes","Chives","Cucumber","Green Beans","Fennel","Grapes","Leek","Lettuce","Onion","Potatoes","Strawberries","Sweet Corn","Tomatoes"];
+			saveChoice(1);
+			gotoItems();
+		}
+		
+			
+		function deleteIf(x)
+		{
+			vegetableChosen = $("#vegname").text();
+			if (vegetableChosen.indexOf(':') != -1) vegetableChosen = vegetableChosen.slice(0,vegetableChosen.indexOf(':'));
+			alert(vegetableChosen + " has been removed");
+			delete chosenItems[vegetableChosen];
+			completed_items.splice(completed_items.indexOf(vegetableChosen),1);
+			saveChoice(2);
+			if (x == 1)
+			{
+				vegetableChosen = all_items.indexOf(vegetableChosen);
+				all_items.splice(vegetableChosen, 1);
+				saveChoice(1);
+				gotoItems();
+			}
+			else showChosenItems();
+			
+		}
+    </script>
+    <!------------Scripts------------>
+
+
+</body>
+</html>
