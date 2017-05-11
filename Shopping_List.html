@@ -258,7 +258,6 @@
 
 			//remove existing items from shopping list
 			$("#shoppingList").empty();
-
 			 //iterate through the dictionary chosenItems
 			for (var key in chosenItems) 
 			{
@@ -319,7 +318,7 @@
 				quantityChosen = $("#spin").val();
 				if (vegetableChosen.indexOf(':') > -1) vegetableChosen = vegetableChosen.slice(0,vegetableChosen.indexOf(':'));
 				if (vegetableChosen in chosenItems) alert("Item already exists in your list. Any adjusted values will be added to item.");
-				completed_items.splice(completed_items.indexOf(vegetableChosen),1);
+				if (vegetableChosen in completed_items) completed_items.splice(completed_items.indexOf(vegetableChosen),1);
 				chosenItems[vegetableChosen] = quantityChosen;
 				localStorage.setItem("previousList",JSON.stringify(chosenItems));
 				localStorage.setItem("completedItems",JSON.stringify(completed_items));
