@@ -154,6 +154,7 @@
     
     <!------------Scripts------------>
     <script>
+		//Variable Setup
 		var chosenItems = {};
 		var all_items = [];
 		var completed_items = [];
@@ -164,11 +165,8 @@
 		var count2 = 0;
 		var count3 = 0;
 
-
+		//Setup
 		$( document ).ready(function() {
-			// you can only save strings to local storage
-			// so all js objects have to be saved in the form JSON.stringify()
-			// and retrieved in the format JSON.parse(obj)
 			var q = localStorage.getItem("previousList");
 			if (q!=null) chosenItems = JSON.parse(q);
 			var l = localStorage.getItem("items");
@@ -180,6 +178,7 @@
 			on_load = 1;
 		});
 			
+		//Show items page	
 		function gotoItems()
 		{
 			all_items.sort();
@@ -197,6 +196,7 @@
 			
 		}
 
+		//Show quantity page
 		function gotoQuantity(obj,del)
 		{
 			$.mobile.changePage("#quantity");
@@ -214,6 +214,7 @@
 			}
 		}
 
+		//Show add items page
 		function addToList()
 		{
 			hold = $("#new_item").val();
@@ -233,15 +234,18 @@
 			
 			
 		}
+		
+		//Set item as not done
 		function incomplete()
 		{
 			hold = $("#vegname").text();
 			hold = hold.slice(0,hold.indexOf(':'));
-			alert(hold);
 			if (completed_items.indexOf(hold) >= 0 ) completed_items.splice(hold, 1);
 			saveChoice(3);
 			showChosenItems();
 		}
+		
+		//Set item as done
 		function completed()
 		{
 			hold = $("#vegname").text();
@@ -251,14 +255,13 @@
 			saveChoice(3);
 			showChosenItems(2);
 		}
+		
+		//Show chosen items page
 		function showChosenItems(x)
 		{
 			if ($("#spin").val() > 0) {saveChoice(0); $("#spin").val(0);}
 			else if (on_load > 0 && x == 1) alert("No value given, showing current chosen items");
-
-			//remove existing items from shopping list
 			$("#shoppingList").empty();
-			 //iterate through the dictionary chosenItems
 			for (var key in chosenItems) 
 			{
 				vegData = key + ":" +  chosenItems[key];
@@ -274,7 +277,6 @@
 				}
 				if (check == 0) $('<li>').append('<a onclick="gotoQuantity(this,2)">' + vegData + '</a>').appendTo('#shoppingList');
 			}
-			//you have to navigate to the page after you have populated
 			if (on_load > 0)
 			{
 				$.mobile.changePage("#finalShoppingList");
@@ -282,6 +284,7 @@
 			}
 		}
 		
+		//Shows stats
 		function weeklySummary()
 		{
 			total = 0;
@@ -304,12 +307,16 @@
 			$.mobile.changePage('#weeklySummary');
 		}
 		
+		
+		//Goes back to items page
 		function backToList()
 		{
 			saveChoice(0);
 			$.mobile.changePage("#items");
 		}
 
+		
+		//Saves lists to local storage
 		function saveChoice(save)
 		{
 			if (save == 0)
@@ -327,6 +334,8 @@
 			if (save == 2) localStorage.setItem("previousList",JSON.stringify(chosenItems));
 			if (save == 3) localStorage.setItem("completedItems",JSON.stringify(completed_items));
 		}
+		
+		//Clears all lists
 		function clearLists()
 		{
 			all_items = [];
@@ -335,6 +344,8 @@
 			localStorage.clear();
 			week = {};
 		}
+		
+		//Adds default items to items page
 		function defaultList()
 		{
 			all_items = ["Apples", "Avacardo", "Apricots", "Aubergines", "Bananas","Beetroot","Broccolli","Caluiflower","Carrots","Courgettes","Chives","Cucumber","Green Beans","Fennel","Grapes","Leek","Lettuce","Onion","Potatoes","Strawberries","Sweet Corn","Tomatoes"];
@@ -343,6 +354,7 @@
 		}
 		
 			
+		//Delete from chosen items as well as the item itself
 		function deleteIf(x)
 		{
 			vegetableChosen = $("#vegname").text();
